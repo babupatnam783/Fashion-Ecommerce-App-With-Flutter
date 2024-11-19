@@ -36,7 +36,7 @@ class PasswordPage extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
                 if (state is ButtonSuccessState) {
-                  AppNavigation.pushReplacement(context, const HomePage());
+                  AppNavigation.pushAndRemove(context, const HomePage());
                 }
               },
               child: Column(
