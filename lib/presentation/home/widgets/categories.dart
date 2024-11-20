@@ -4,9 +4,9 @@ import 'package:ecommerce_app/common/helper/images/image_display.dart';
 import 'package:ecommerce_app/common/helper/navigation/app_navigation.dart';
 import 'package:ecommerce_app/domain/category/entity/category.dart';
 import 'package:ecommerce_app/presentation/all_categories/pages/all_categories_page.dart';
+import 'package:ecommerce_app/presentation/category_products/pages/category_products.dart';
 import 'package:ecommerce_app/presentation/home/widgets/title_and_see_all.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
@@ -27,7 +27,12 @@ class Categories extends StatelessWidget {
             if (state is CategoriesLoaded) {
               return Column(
                 children: [
-                  TitleAndSeeAll(title: "Categories",onTap: (){AppNavigation.push(context, const AllCategoriesPage());},),
+                  TitleAndSeeAll(
+                    title: "Categories",
+                    onTap: () {
+                      AppNavigation.push(context, const AllCategoriesPage());
+                    },
+                  ),
                   const Gap(20),
                   _categories(state.categories),
                 ],
@@ -50,18 +55,24 @@ class Categories extends StatelessWidget {
         itemBuilder: (context, index) {
           return Column(
             children: [
-              Container(
-                height: 60,
-                width: 60,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: NetworkImage(
-                    ImageDisplayHelper.generateCategoryImageURL(categories[index].image)
+              GestureDetector(
+                onTap: () {
+                  AppNavigation.push(context,
+                      CategoryProductsPage(categoryEntity: categories[index]));
+                },
+                child: Container(
+                  height: 60,
+                  width: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          ImageDisplayHelper.generateCategoryImageURL(
+                              categories[index].image)),
+                      fit: BoxFit.fill,
+                    ),
                   ),
-                  fit: BoxFit.fill,
-                  )
                 ),
               ),
               const SizedBox(
@@ -69,7 +80,8 @@ class Categories extends StatelessWidget {
               ),
               Text(
                 categories[index].title,
-                style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
+                style:
+                    const TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
               )
             ],
           );
